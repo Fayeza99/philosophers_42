@@ -6,7 +6,7 @@
 /*   By: fnikzad <fnikzad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 15:58:27 by fnikzad           #+#    #+#             */
-/*   Updated: 2024/03/10 15:21:40 by fnikzad          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:53:54 by fnikzad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ typedef struct s_data
 	t_philo 			*philos;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		p_action;
+	// pthread_mutex_t		die;
+	int					all_done;
 }	t_data;
 
 typedef struct s_philo
@@ -45,6 +47,7 @@ typedef struct s_philo
 	int			right_fork;
 	int			left_fork;
 	int			num_eat;
+	int			done_eating;
 	
 }	t_philo;
 
@@ -63,5 +66,7 @@ void	ft_usleep(long int duration);
 void	print_ac(char *action, t_philo *philo, long int now);
 
 void	ft_sleep(t_philo *philo);
+
+int	dying(t_philo *philo);
 
 #endif

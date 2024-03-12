@@ -6,7 +6,7 @@
 /*   By: fnikzad <fnikzad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 08:33:51 by fnikzad           #+#    #+#             */
-/*   Updated: 2024/03/11 12:58:29 by fnikzad          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:02:33 by fnikzad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,32 @@ void	ft_usleep(long int duration)
 	i = get_current_time();
 	while ((get_current_time() - i) < duration)
 		usleep(duration / 10);
+}
+
+int	dying(t_philo *philo)
+{
+	int i;
+	while (1)
+	{
+		i = 0;
+		while (i < philo->p_data->n_philo)
+		{
+			if (philo->p_data->all_done == philo->p_data->n_philo)
+			{
+				// printf("kdnkwjejawef\n");
+				return (1);
+			}
+			if (get_current_time() - philo->p_data->philos[i].last_eat > philo->p_data->time_to_die)
+			{
+				
+				print_ac("died", &philo->p_data->philos[i], get_current_time());
+				philo->p_data->signal_for_stop = 1;
+				
+				return (1);
+			}
+			
+			i++;
+		}
+	}
+	return (0);
 }
