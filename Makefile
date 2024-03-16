@@ -1,6 +1,6 @@
 NAME		=	philo
-SRC			=	main.c utils.c print_utils.c 
-CFLAGS		=	-Wall -Wextra -Werror
+SRC			=	main.c utils.c print_utils.c init.c death.c philo_functions.c
+CFLAGS		=	-Wall -Wextra -Werror -pthread -g
 
 all : $(NAME)
 

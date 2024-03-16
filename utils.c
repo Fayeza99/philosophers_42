@@ -6,7 +6,7 @@
 /*   By: fnikzad <fnikzad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 14:32:28 by fnikzad           #+#    #+#             */
-/*   Updated: 2024/03/10 13:06:20 by fnikzad          ###   ########.fr       */
+/*   Updated: 2024/03/13 13:50:57 by fnikzad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ int	ft_atoi(const char *str)
 
 int	is_num(char *s)
 {
-	int i = 0;
-	while(s && s[i])
+	int	i;
+
+	i = 0;
+	while (s && s[i])
 	{
 		if (s[i] >= '0' && s[i] <= '9')
 			i++;
@@ -80,4 +82,9 @@ void	ft_putendl_fd(char *s, int fd)
 		write (fd, &s[i], 1);
 		i++;
 	}
+}
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
 }

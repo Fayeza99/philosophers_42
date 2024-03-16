@@ -6,16 +6,11 @@
 /*   By: fnikzad <fnikzad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 08:33:51 by fnikzad           #+#    #+#             */
-/*   Updated: 2024/03/12 17:02:33 by fnikzad          ###   ########.fr       */
+/*   Updated: 2024/03/15 18:22:12 by fnikzad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	ft_putchar_fd(char c, int fd)
-{
-	write(fd, &c, 1);
-}
 
 void	ft_putnbr_fd(int n, int fd)
 {
@@ -36,12 +31,16 @@ void	ft_putnbr_fd(int n, int fd)
 
 void	print_ac(char *action, t_philo *philo, long int now)
 {
-
+	pthread_mutex_lock(&philo->p_data->die);
+	if (philo->p_data->stop == 1)
+	{
+		pthread_mutex_unlock(&philo->p_data->die);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->p_data->die);
 	pthread_mutex_lock(&philo->p_data->p_action);
 	ft_putnbr_fd(now - philo->p_data->start_time, 1);
-	// ft_putendl_fd(" Philo ", 1);
 	write (1, " ", 1);
-	
 	ft_putnbr_fd(philo->id, 1);
 	write (1, " ", 1);
 	ft_putendl_fd(action, 1);
@@ -64,32 +63,4 @@ void	ft_usleep(long int duration)
 	i = get_current_time();
 	while ((get_current_time() - i) < duration)
 		usleep(duration / 10);
-}
-
-int	dying(t_philo *philo)
-{
-	int i;
-	while (1)
-	{
-		i = 0;
-		while (i < philo->p_data->n_philo)
-		{
-			if (philo->p_data->all_done == philo->p_data->n_philo)
-			{
-				// printf("kdnkwjejawef\n");
-				return (1);
-			}
-			if (get_current_time() - philo->p_data->philos[i].last_eat > philo->p_data->time_to_die)
-			{
-				
-				print_ac("died", &philo->p_data->philos[i], get_current_time());
-				philo->p_data->signal_for_stop = 1;
-				
-				return (1);
-			}
-			
-			i++;
-		}
-	}
-	return (0);
 }
