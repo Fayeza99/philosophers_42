@@ -6,7 +6,7 @@
 /*   By: fnikzad <fnikzad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 08:33:51 by fnikzad           #+#    #+#             */
-/*   Updated: 2024/03/15 18:22:12 by fnikzad          ###   ########.fr       */
+/*   Updated: 2024/03/17 12:33:10 by fnikzad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	print_ac(char *action, t_philo *philo, long int now)
 		pthread_mutex_unlock(&philo->p_data->die);
 		return ;
 	}
-	pthread_mutex_unlock(&philo->p_data->die);
 	pthread_mutex_lock(&philo->p_data->p_action);
 	ft_putnbr_fd(now - philo->p_data->start_time, 1);
 	write (1, " ", 1);
@@ -46,6 +45,7 @@ void	print_ac(char *action, t_philo *philo, long int now)
 	ft_putendl_fd(action, 1);
 	write (1, "\n", 1);
 	pthread_mutex_unlock(&philo->p_data->p_action);
+	pthread_mutex_unlock(&philo->p_data->die);
 }
 
 long	get_current_time(void)
@@ -62,5 +62,5 @@ void	ft_usleep(long int duration)
 
 	i = get_current_time();
 	while ((get_current_time() - i) < duration)
-		usleep(duration / 10);
+		usleep(200);
 }

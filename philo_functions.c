@@ -6,7 +6,7 @@
 /*   By: fnikzad <fnikzad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 18:15:50 by fnikzad           #+#    #+#             */
-/*   Updated: 2024/03/16 12:10:57 by fnikzad          ###   ########.fr       */
+/*   Updated: 2024/03/17 12:31:30 by fnikzad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	ft_eat2(t_philo *philo, int forks1, int forks2)
 	pthread_mutex_lock(&philo->p_data->n_eat);
 	philo->num_eat++;
 	pthread_mutex_unlock(&philo->p_data->n_eat);
+	ft_usleep(philo->p_data->time_to_eat);
 	pthread_mutex_unlock(&philo->p_data->forks[forks2]);
 	pthread_mutex_unlock(&philo->p_data->forks[forks1]);
-	ft_usleep(philo->p_data->time_to_eat);
 }
 
 void	ft_eat(t_philo *philo)
@@ -49,17 +49,11 @@ void	ft_eat(t_philo *philo)
 
 void	ft_sleep(t_philo *philo)
 {
-	if (philo->p_data->stop == 0)
-	{
-		print_ac("is sleeping", philo, get_current_time());
-		ft_usleep(philo->p_data->time_to_sleep);
-	}
+	print_ac("is sleeping", philo, get_current_time());
+	ft_usleep(philo->p_data->time_to_sleep);
 }
 
 void	ft_think(t_philo *philo)
 {
-	if (philo->p_data->stop == 0)
-	{
-		print_ac("is thinking", philo, get_current_time());
-	}
+	print_ac("is thinking", philo, get_current_time());
 }

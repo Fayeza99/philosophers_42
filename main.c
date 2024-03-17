@@ -6,15 +6,17 @@
 /*   By: fnikzad <fnikzad@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 15:57:09 by fnikzad           #+#    #+#             */
-/*   Updated: 2024/03/16 12:20:13 by fnikzad          ###   ########.fr       */
+/*   Updated: 2024/03/17 12:49:50 by fnikzad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_atoi_all(char **s, t_data *data)
+int	ft_atoi_all(char **s, t_data *data)
 {
 	data->n_philo = ft_atoi(s[1]);
+	if (data->n_philo > 200)
+		return (1);
 	data->time_to_die = ft_atoi(s[2]);
 	data->time_to_eat = ft_atoi(s[3]);
 	data->time_to_sleep = ft_atoi(s[4]);
@@ -22,6 +24,7 @@ void	ft_atoi_all(char **s, t_data *data)
 		data->must_eat = ft_atoi(s[5]);
 	else
 		data->must_eat = 0;
+	return (0);
 }
 
 void	*philo_function(void *data)
@@ -73,6 +76,8 @@ void	join_and_destroy(t_data *data)
 		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}
+	free (data->philos);
+	free (data->forks);
 }
 
 int	main(int argc, char **argv)
@@ -81,21 +86,18 @@ int	main(int argc, char **argv)
 	int		i;
 
 	if (valid_args(argv) == 0 || (argc != 5 && argc != 6))
-	{
-		ft_putendl_fd("Wrong Number of Args\n", 2);
-		return (1);
-	}
-	ft_atoi_all(argv, &data);
+		return (ft_putendl_fd("Error\n", 2), 1);
+	if (argv[5] && ft_atoi(argv[5]) == 0)
+		return (ft_putendl_fd("Error\n", 2), 1);
+	if (ft_atoi_all(argv, &data) == 1)
+		return (ft_putendl_fd("Error\n", 2), 1);
 	i = -1;
 	init_philos(&data);
 	while (++i < data.n_philo)
 	{
 		if (pthread_create(&data.philos[i].p_th,
 				NULL, &philo_function, (void*) &data.philos[i]) != 0)
-		{
-			ft_putendl_fd("Error\n", 2);
-			return (1);
-		}
+			return (ft_putendl_fd("Error\n", 2), 1);
 	}
 	ft_usleep(data.time_to_die + 1);
 	dying (&data);
